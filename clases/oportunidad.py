@@ -1,3 +1,4 @@
+
 class Oportunidad:
 
     def __init__(self, id_oportunidad, etapa, prioridad, riesgo, correo):
