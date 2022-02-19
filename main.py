@@ -362,11 +362,11 @@ def borrar_Cliente():
 
         if confirmacion == "s":
             if clientes.keys().__contains__(id_clie_del):
-
-                for oportunidad in oportunidades:
-                    if len(oportunidad.listaClientes) != 0:
-                        if oportunidad.listaClientes.keys().__contains__(id_clie_del):
-                            oportunidad.listaClientes(id_clie_del)
+                if len(oportunidades) > 0:
+                    for o in oportunidades.values():
+                        if o.listaClientes.keys().__contains__(id_clie_del):
+                            print("prueba")
+                            o.listaClientes.pop(id_clie_del)
 
                 clientes.pop(id_clie_del)
                 print("cliente eliminado con exito")
@@ -375,7 +375,7 @@ def borrar_Cliente():
                 print("Error el id del cliente no se encuentra en registrado, por favor intentelo otra vez")
 
         elif confirmacion == "n":
-            print("Acción de crear cliente denegada con exito")
+            print("Acción de eliminar cliente denegada con exito")
         else:
             print("Error no seleccionaste nada se saldra al punto anterior")
 
@@ -459,6 +459,17 @@ def listar_clientes():
             print("-id:" + str(
                 cliente.id_clie) + ", nombre:" + cliente.nombre + ", apellido: " + cliente.apellido + " , email:" + cliente.email + ", telefono:" + cliente.telefono + ";")
 
+            print("     Lista oportunidades:")
+
+            if len(cliente.listaOportunidades) <= 0:
+                print("         No hay oportunidades asociadas al cliente")
+            else:
+                for o in cliente.listaOportunidades.values():
+                    print("         -id:" + str(
+                        o.id_oportunidad) + ", nombre:" + o.nombre + ", etapa: " + o.etapa + ", "
+                                                                                             "prioridad:" + o.prioridad + ", riesgo:" + o.riesgo +
+                          ",Correo :" + o.correo + ";")
+
 
 def menu_oportunidades():
     menu_oportunidad = False
@@ -512,7 +523,7 @@ def crear_oportunidad():
         etapaBoolean = False
         while not etapaBoolean:
             try:
-                print("Selecciona la etapa  de la prioridad:\n"
+                print("Selecciona la etapa  de la oportunidad:\n"
                       "0-nuevo\n"
                       "1-Calificado\n"
                       "2-propuesta\n"
@@ -521,7 +532,7 @@ def crear_oportunidad():
                 etapaSeleccion = input()
 
                 if etapaSeleccion == "0":
-                    etap = Etapa.nuevo
+                    etap = Etapa.nuevo.value
                     etapaBoolean = True
                 elif etapaSeleccion == "1":
                     etap = Etapa.calificado.value
@@ -545,7 +556,7 @@ def crear_oportunidad():
         prioridadBoolean = False
         while not prioridadBoolean:
             try:
-                print("Selecciona el tipo de prioridad:\n"
+                print("Selecciona el tipo de prioridad de la oportunidad:\n"
                       "0-Alta\n"
                       "1-Media\n"
                       "2-Baja\n")
@@ -555,10 +566,10 @@ def crear_oportunidad():
                     prio = Prioridad.alta.value
                     prioridadBoolean = True
                 elif prioridadSeleccion == "1":
-                    prio = Prioridad.alta.value
+                    prio = Prioridad.media.value
                     prioridadBoolean = True
                 elif prioridadSeleccion == "2":
-                    prio = Prioridad.alta.value
+                    prio = Prioridad.baja.value
                     prioridadBoolean = True
                 else:
                     print("Selecciona una de las siguientes opciones: ")
@@ -568,7 +579,7 @@ def crear_oportunidad():
         riesBoolean = False
         while not riesBoolean:
             try:
-                print("Selecciona el tipo de riesgo:\n"
+                print("Selecciona el tipo de riesgo de la oportunidad:\n"
                       "0-leve\n"
                       "1-moderado\n"
                       "2-excesivo\n")
@@ -638,68 +649,70 @@ def crear_oportunidad():
 
 
 def borrar_oportunidad():
-    id_clie_del = -1
+    id_oport_del = -1
     validarId = False
-    if len(clientes) <= 0:
-        print("No hay clientes para borrar")
+    if len(oportunidades) <= 0:
+        print("No hay Oportunidades para borrar")
     else:
         while not validarId:
             try:
 
-                listar_clientes()
-                print("Selecciona el id del cliente que quieres eliminar: ")
-                id_clie_del = int(input())
-                if clientes.keys().__contains__(id_clie_del):
+                listar_oportunidades()
+                print("Selecciona el id de la oportunidad que quieres eliminar: ")
+                id_oport_del = int(input())
+                if oportunidades.keys().__contains__(id_oport_del):
                     validarId = True
                 else:
-                    print("El cliente no existe por favor seleccione uno que exista para ser eliminado")
+                    print("La oportunidad no existe por favor seleccione uno que exista para ser eliminada")
 
             except:
                 print("Error porfavor introduzca un número:")
 
-        print("¿Seguro que quieres eliminar este cliente?(escribe 's' si quieres que se cree o 'n' si no)")
+        print("¿Seguro que quieres eliminar esta oportunidad?(escribe 's' si quieres que se cree o 'n' si no)")
 
-        cliente = clientes[id_clie_del]
+        oport = oportunidades[id_oport_del]
 
         print("-id:" + str(
-            cliente.id_clie) + ", nombre:" + cliente.nombre + ", apellido: " + cliente.apellido + " , email:" + cliente.email + ";")
+            oport.id_oportunidad) + ", nombre:" + oport.nombre + ", etapa: " + oport.etapa + ", "
+                                                                                             "prioridad:" + oport.prioridad + ", riesgo:" + oport.riesgo +
+              ",Correo :" + oport.correo + ";")
 
         confirmacion = input()
 
         if confirmacion == "s":
-            if clientes.keys().__contains__(id_clie_del):
+            if oportunidades.keys().__contains__(id_oport_del):
+                if len(clientes) > 0:
+                    for c in clientes.values():
+                        if c.listaOportunidades.keys().__contains__(id_oport_del):
+                            print("prueba2")
+                            c.listaOportunidades.pop(id_oport_del)
 
-                for oportunidad in oportunidades:
-                    if len(oportunidad.listaClientes) != 0:
-                        if oportunidad.listaClientes.keys().__contains__(id_clie_del):
-                            oportunidad.listaClientes(id_clie_del)
-
-                clientes.pop(id_clie_del)
+                oportunidades.pop(id_oport_del)
                 print("cliente eliminado con exito")
-                listar_clientes()
+                listar_oportunidades()
             else:
-                print("Error el id del cliente no se encuentra en registrado, por favor intentelo otra vez")
+                print("Error el id de la oportunidad no se encuentra en registrado, por favor intentelo otra vez")
 
         elif confirmacion == "n":
-            print("Acción de crear cliente denegada con exito")
+            print("Acción de eliminar  cliente denegada con exito")
         else:
             print("Error no seleccionaste nada se saldra al punto anterior")
 
 
 def editar_oportunidad():
-    id_clie_edit = -1
+    id_oport_edit = -1
     validarId = False
 
-    if len(clientes) <= 0:
-        print("No hay clientes para editar")
+    if len(oportunidades) <= 0:
+        print("No hay oportunidades para editar")
     else:
         while not validarId:
             try:
 
-                listar_clientes()
-                print("Selecciona el id del cliente que quieres editar: ")
-                id_clie_edit = int(input())
-                if clientes.keys().__contains__(id_clie_edit):
+                listar_oportunidades()
+                print("Selecciona el id de la oportunidad  que quieres editar: ")
+                id_oport_edit = int(input())
+                if oportunidades.keys().__contains__(id_oport_edit):
                     validarId = True
                 else:
                     print("El cliente no existe por favor seleccione uno que exista para ser eliminado")
@@ -711,45 +724,82 @@ def editar_oportunidad():
         while not menuEditarCliente:
             print("Menu Edicion de Cliente:\n"
                   "0-Editar nombre\n"
-                  "1-Editar Apellido\n"
-                  "2-Editar Telefono\n"
-                  "3-Editar email\n"
-                  "4-Salir de la edicion del cliente")
+                  "1-Editar Etapa\n"
+                  "2-Editar Prioridad\n"
+                  "3-4-Salir de la edicion de la etapa\n"
+                  )
 
             seleccion_de_edicion = input()
 
             if seleccion_de_edicion == '0':
-                print("Escriba el nuevo nombre del cliente: ")
+                print("Escriba el nuevo nombre de la  oportunidad: ")
                 nuevoNombre = input()
-
-                clientes[id_clie_edit].nombre = nuevoNombre
+                oportunidades[id_oport_edit].nombre = nuevoNombre
 
                 print("Nombre cambiado de forma satisfactoria")
 
             elif seleccion_de_edicion == '1':
-                print("Escriba el nuevo Apellido del cliente: ")
-                nuevoApellido = input()
+                etapaBoolean = False
+                while not etapaBoolean:
+                    try:
+                        print("Selecciona la nueva  etapa  de la oportunidad:\n"
+                              "0-nuevo\n"
+                              "1-Calificado\n"
+                              "2-propuesta\n"
+                              "3-ganada\n"
+                              "4-perdida\n")
+                        etapaSeleccion = input()
 
-                clientes[id_clie_edit].apellido = nuevoApellido
+                        if etapaSeleccion == "0":
+                            oportunidades[id_oport_edit].etapa = Etapa.nuevo.value
+                            etapaBoolean = True
+                        elif etapaSeleccion == "1":
+                            oportunidades[id_oport_edit].etapa = Etapa.calificado.value
+                            etapaBoolean = True
+                        elif etapaSeleccion == "2":
+                            oportunidades[id_oport_edit].etapa = Etapa.propuesta.value
+                            etapaBoolean = True
+                        elif etapaSeleccion == "3":
+                            oportunidades[id_oport_edit].etapa = Etapa.ganada.value
+                            etapaBoolean = True
+                        elif etapaSeleccion == "4":
+                            oportunidades[id_oport_edit].etapa = Etapa.perdida.value
+                            etapaBoolean = True
+                        else:
+                            print("Selecciona una de las siguientes opciones: ")
 
-                print("Apellido cambiado de forma satisfactoria")
+
+                    except:
+                        print("Error controlado, selecciona una de las opciones: ")
+
+                print("Etapa cambiada de forma satisfactoria")
 
             elif seleccion_de_edicion == '2':
-                print("Escriba el nuevo telefono del cliente: ")
-                nuevoTelefono = input()
+                prioridadBoolean = False
+                while not prioridadBoolean:
+                    try:
+                        print("Selecciona el nuevo  tipo de prioridad:\n"
+                              "0-Alta\n"
+                              "1-Media\n"
+                              "2-Baja\n")
+                        prioridadSeleccion = input()
 
-                clientes[id_clie_edit].telefono = nuevoTelefono
+                        if prioridadSeleccion == "0":
+                            oportunidades[id_oport_edit].prioridad = Prioridad.alta.value
+                            prioridadBoolean = True
+                        elif prioridadSeleccion == "1":
+                            oportunidades[id_oport_edit].prioridad = Prioridad.media.value
+                            prioridadBoolean = True
+                        elif prioridadSeleccion == "2":
+                            oportunidades[id_oport_edit].prioridad = Prioridad.baja.value
+                            prioridadBoolean = True
+                        else:
+                            print("Selecciona una de las siguientes opciones: ")
+                    except:
+                        print("Error controlado, selecciona una de las opciones: ")
 
-                print("Telefono cambiado de forma satisfactoria")
+                print("Prioridad cambiada de forma satisfactoria")
             elif seleccion_de_edicion == '3':
-                print("Escriba el nuevo email del cliente: ")
-                nuevoEmail = input()
-
-                clientes[id_clie_edit].email = nuevoEmail
-
-                print("Email cambiado de forma satisfactoria")
-
-            elif seleccion_de_edicion == '4':
                 print("Salir de la edicion del cliente")
                 menuEditarCliente = True
             else:

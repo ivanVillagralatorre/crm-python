@@ -8,5 +8,3 @@ class Cliente:
         self.telefono = telefono
         self.email = email
         self.listaOportunidades = {}
-
-
