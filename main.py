@@ -49,7 +49,7 @@ def menu_actividades():
             editar_actividad()
 
         elif eleccion_number_actividad == '3':
-            listar_actividad()
+            listar_actividades()
 
         elif eleccion_number_actividad == '4':
             print("Saliste del menu de actividades")
@@ -163,125 +163,116 @@ def crear_actividad():
 
 
 def borrar_actividad():
-    id_clie_del = -1
+    id_act_del = -1
     validarId = False
-    if len(clientes) <= 0:
-        print("No hay clientes para borrar")
+    if len(actividades) <= 0:
+        print("No hay actividades para borrar")
     else:
         while not validarId:
             try:
-
-                listar_clientes()
-                print("Selecciona el id del cliente que quieres eliminar: ")
-                id_clie_del = int(input())
-                if clientes.keys().__contains__(id_clie_del):
+                print("Lista de actividades: ")
+                listar_actividades()
+                print("Selecciona el id de la  actividad que quieres eliminar: ")
+                id_act_del = int(input())
+                if actividades.keys().__contains__(id_act_del):
                     validarId = True
                 else:
-                    print("El cliente no existe por favor seleccione uno que exista para ser eliminado")
+                    print("La actividad no existe por favor seleccione una que exista para eliminarla")
 
             except:
                 print("Error porfavor introduzca un número:")
 
-        print("¿Seguro que quieres eliminar este cliente?(escribe 's' si quieres que se cree o 'n' si no)")
+        print("¿Seguro que quieres eliminar esta  actividad?(escribe 's' si quieres que se elimine  o 'n' si no)")
 
-        cliente = clientes[id_clie_del]
+        act = actividades[id_act_del]
 
         print("-id:" + str(
-            cliente.id_clie) + ", nombre:" + cliente.nombre + ", apellido: " + cliente.apellido + " , email:" + cliente.email + ";")
+            act.id_actividad) + ", nombre:" + act.nombre + ", fecha inicio: " + act.fecha_inicio + " , fecha fin:" + act.fecha_fin +
+              " , Resumen:" + act.resumen + " , descripcion:" + act.descripcion + ";")
 
         confirmacion = input()
 
         if confirmacion == "s":
-            if clientes.keys().__contains__(id_clie_del):
+            if actividades.keys().__contains__(id_act_del):
+                if len(oportunidades) > 0:
+                    for o in oportunidades.values():
+                        if o.listaActividades.keys().__contains__(id_act_del):
+                            o.listaActividades.pop(id_act_del)
 
-                for oportunidad in oportunidades:
-                    if len(oportunidad.listaClientes) != 0:
-                        if oportunidad.listaClientes.keys().__contains__(id_clie_del):
-                            oportunidad.listaClientes(id_clie_del)
-
-                clientes.pop(id_clie_del)
-                print("cliente eliminado con exito")
+                actividades.pop(id_act_del)
+                print("Actividad eliminada con exito")
                 listar_clientes()
             else:
-                print("Error el id del cliente no se encuentra en registrado, por favor intentelo otra vez")
+                print("Error el id de la actividad no existe, por favor intentelo otra vez")
 
         elif confirmacion == "n":
-            print("Acción de crear cliente denegada con exito")
+            print("Acción de borrar la  actividad denegada con exito")
         else:
             print("Error no seleccionaste nada se saldra al punto anterior")
 
 
 def editar_actividad():
-    id_clie_edit = -1
+    id_act_edit = -1
     validarId = False
 
-    if len(clientes) <= 0:
-        print("No hay clientes para editar")
+    if len(actividades) <= 0:
+        print("No hay actividades para editar")
     else:
         while not validarId:
             try:
 
-                listar_clientes()
-                print("Selecciona el id del cliente que quieres editar: ")
-                id_clie_edit = int(input())
-                if clientes.keys().__contains__(id_clie_edit):
+                listar_actividades()
+                print("Selecciona el id de la actividad que quieres editar: ")
+                id_act_edit = int(input())
+                if actividades.keys().__contains__(id_act_edit):
                     validarId = True
                 else:
-                    print("El cliente no existe por favor seleccione uno que exista para ser eliminado")
+                    print("La actividad no existe por favor seleccione una que exista para editar")
 
             except:
                 print("Error porfavor introduzca un número:")
 
-        menuEditarCliente = False
-        while not menuEditarCliente:
-            print("Menu Edicion de Cliente:\n"
+        menuEditarActividad = False
+        while not menuEditarActividad:
+            print("Menu Edicion de la actividad:\n"
                   "0-Editar nombre\n"
-                  "1-Editar Apellido\n"
-                  "2-Editar Telefono\n"
-                  "3-Editar email\n"
-                  "4-Salir de la edicion del cliente")
+                  "1-Editar Resumen\n"
+                  "2-Editar Descripcion\n"
+                  "3-Salir de la edicion de la actividad")
 
             seleccion_de_edicion = input()
 
             if seleccion_de_edicion == '0':
-                print("Escriba el nuevo nombre del cliente: ")
+                print("Escriba el nuevo nombre de la actividad: ")
                 nuevoNombre = input()
-
-                clientes[id_clie_edit].nombre = nuevoNombre
+                actividades[id_act_edit].nombre = nuevoNombre
 
                 print("Nombre cambiado de forma satisfactoria")
 
             elif seleccion_de_edicion == '1':
-                print("Escriba el nuevo Apellido del cliente: ")
-                nuevoApellido = input()
+                print("Escriba el nuevo resumen de la actividad: ")
+                resumen = input()
 
-                clientes[id_clie_edit].apellido = nuevoApellido
+                actividades[id_act_edit].resumen = resumen
 
-                print("Apellido cambiado de forma satisfactoria")
+                print("Resumen cambiado de forma satisfactoria")
 
             elif seleccion_de_edicion == '2':
-                print("Escriba el nuevo telefono del cliente: ")
-                nuevoTelefono = input()
+                print("Escriba la nueva descripcion de la  actividad: ")
+                descripcion = input()
 
-                clientes[id_clie_edit].telefono = nuevoTelefono
+                actividades[id_act_edit].descripcion = descripcion
 
-                print("Telefono cambiado de forma satisfactoria")
+                print("Descripción cambiada de forma satisfactoria")
+
             elif seleccion_de_edicion == '3':
-                print("Escriba el nuevo email del cliente: ")
-                nuevoEmail = input()
-
-                clientes[id_clie_edit].email = nuevoEmail
-
-                print("Email cambiado de forma satisfactoria")
-
-            elif seleccion_de_edicion == '4':
                 print("Salir de la edicion del cliente")
-                menuEditarCliente = True
+                menuEditarActividad = True
             else:
                 print("por favor seleccione una opción correcta ")
 
 
-def listar_actividad():
+def listar_actividades():
     if len(actividades) <= 0:
         print("No hay Actividades, por favor introduzca alguna")
     else:
@@ -709,7 +700,7 @@ def borrar_oportunidad():
     else:
         while not validarId:
             try:
-
+                print("Lista de Oportunidades: ")
                 listar_oportunidades()
                 print("Selecciona el id de la oportunidad que quieres eliminar: ")
                 id_oport_del = int(input())
