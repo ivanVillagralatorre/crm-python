@@ -23,9 +23,15 @@ def submenus(eleccionNumber):
     elif eleccionNumber == '2':
         menu_actividades()
     elif eleccionNumber == '3':
+        generar_informes()
+    elif eleccionNumber == '4':
         menu_1 = True
     else:
         print("por favor seleccione una opción correcta")
+
+
+def generar_informes():
+    print("informes")
 
 
 def menu_actividades():
