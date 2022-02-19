@@ -1,8 +1,9 @@
 
 class Oportunidad:
 
-    def __init__(self, id_oportunidad, etapa, prioridad, riesgo, correo):
+    def __init__(self, id_oportunidad,nombre, etapa, prioridad, riesgo, correo):
         self.id_oportunidad = id_oportunidad
+        self.nombre = nombre
         self.etapa = etapa
         self.prioridad = prioridad
         self.riesgo = riesgo
