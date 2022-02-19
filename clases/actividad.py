@@ -1,5 +1,5 @@
 class Actividad:
-    def __init__(self, id_actividad, nombre, oportunidad, fecha_inicio, fecha_fin, resumen, descripcion):
+    def __init__(self, id_actividad, nombre, oportunidad, fecha_inicio, fecha_fin, resumen, descripcion,tipo):
         self.id_actividad = id_actividad
         self.nombre=nombre
         self.oportunidad = oportunidad
@@ -7,4 +7,4 @@ class Actividad:
         self.fecha_fin = fecha_fin
         self.resumen = resumen
         self.descripcion = descripcion
-
+        self.tipo = tipo

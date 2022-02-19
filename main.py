@@ -2,8 +2,10 @@
 from clases.cliente import Cliente
 from clases.etapas import Etapa
 from clases.oportunidad import Oportunidad
+from clases.actividad import Actividad
 from clases.prioridad import Prioridad
 from clases.riesg import Riesgo
+from clases.tipoActividad import TipoActividad
 
 clientes = {}
 oportunidades = {}
@@ -58,60 +60,106 @@ def menu_actividades():
 
 
 def crear_actividad():
-    rep_clie = False
-    while not rep_clie:
-        print("Escribe el nombre del cliente")
-        nombre = input()
+    rep_act = False
+    id_oport = -1
+    tipo_act = ""
+    validarIdOportunidad = False
+    if len(oportunidades) <= 0:
+        print("Lo siento no hay oportunidades por favor ingerese alguna")
+    else:
+        while not rep_act:
+            print("Escribe el nombre de la actividad")
+            nombre = input()
 
-        print("Escribe el apellido del cliente")
-        apelllido = input()
+            print("Escribe la fecha de inicio de la actividad")
+            fecha_inicio = input()
 
-        print("Escribe el teléfono del cliente")
-        telf = input()
+            print("Escribe la fecha de fin de la actividad")
+            fecha_fin = input()
 
-        print("Escribe el email del cliente")
-        email = input()
+            print("Escribe el resumen de la actividad")
+            resumen = input()
 
-        new_clie = Cliente(len(clientes) + 1, nombre, apelllido, telf, email)
+            print("Escribe la descripcion  de la actividad del ")
+            descripcion = input()
 
-        print("¿Seguro que quieres crear este cliente?(escribe 's' si quieres que se cree o 'n' si no)")
-        confirmacion = input()
+            tipoBoolean = False
+            while not tipoBoolean:
+                try:
+                    print("Selecciona el nuevo  tipo de Actividad:\n"
+                          "0-Compra\n"
+                          "1-Venta\n"
+                          )
+                    tipoSeleccion = input()
 
-        if confirmacion == "s":
-            if len(clientes) == 0:
+                    if tipoSeleccion == "0":
+                        tipo_act = TipoActividad.compra.value
+                        tipoBoolean = True
+                    elif tipoSeleccion == "1":
+                        tipo_act = TipoActividad.venta.value,
+                        tipoBoolean = True
 
-                clientes[len(clientes) + 1] = new_clie
+                    else:
+                        print("Selecciona una de las siguientes opciones: ")
+                except:
+                    print("Error controlado, selecciona una de las opciones: ")
 
-                print("cliente creado con exito")
+                while not validarIdOportunidad:
+                    listar_oportunidades()
+                    try:
+                        print("Selecciona el id de la oportunidad a la que quieres meter un cliente  : ")
+                        id_oport = int(input())
+                    except:
+                        print("Error porfavor introduzca un número:")
+                    if oportunidades.keys().__contains__(id_oport):
+                        validarIdOportunidad = True
+                    else:
+                        print("La  oportunidad no existe por favor seleccione una que exista para agregar el cliente")
 
-                print("-id:" + str(
-                    new_clie.id_clie) + ", nombre:" + new_clie.nombre + ", apellido: " + new_clie.apellido + " , email:" + new_clie.email + ";")
+                new_act = Actividad(len(actividades) + 1, nombre, oportunidades[id_oport], fecha_inicio, fecha_fin,
+                                    resumen,
+                                    descripcion, tipo_act)
+                print("¿Seguro que quieres crear esta actividad?(escribe 's' si quieres que se cree o 'n' si no)")
+                confirmacion = input()
 
-                rep_clie = True
+                if confirmacion == "s":
+                    if len(actividades) == 0:
 
-            else:
-                respuesta = 0
-                for cliente in clientes.values():
-                    if cliente.telefono == new_clie.telefono or cliente.email == new_clie.email:
-                        respuesta = 1
-                        break
-                if respuesta == 0:
-                    clientes[len(clientes) + 1] = new_clie
+                        actividades[len(actividades) + 1] = new_act
+                        oportunidades[id_oport].listaActividades[new_act.id_actividad] = new_act
+                        print("Actividad creada con exito")
 
-                    print("cliente creado con exito")
+                        print("-id:" + str(
+                            new_act.id_actividad) + ", nombre:" + new_act.nombre + ", fecha inicio: " + new_act.fecha_inicio + " , fecha fin:" + new_act.fecha_fin +
+                              " , Resumen:" + new_act.resumen + " , descripcion:" + new_act.descripcion + ";")
 
-                    print("-id:" + str(
-                        new_clie.id_clie) + ", nombre:" + new_clie.nombre + ", apellido: " + new_clie.apellido + " , email:" + new_clie.email + ";")
+                        rep_act = True
 
-                    rep_clie = True
+                    else:
+                        respuesta = 0
+                        for a in actividades.values():
+                            if a.nombre == new_act.nombre:
+                                respuesta = 1
+                                break
+                        if respuesta == 0:
+                            actividades[len(actividades) + 1] = new_act
+                            oportunidades[id_oport].listaActividades[new_act.id_actividad] = new_act
 
-                elif respuesta == 1:
-                    print("El cliente ya existe por favor ingresa otro cliente")
-        elif confirmacion == "n":
-            print("Acción de crear cliente denegada con exito")
-            rep_clie = True
-        else:
-            print("Error no seleccionaste nada se volvera al punto anterior")
+                            print("Actividad creada con exito")
+
+                            print("-id:" + str(
+                                new_act.id_actividad) + ", nombre:" + new_act.nombre + ", fecha inicio: " + new_act.fecha_inicio + " , fecha fin:" + new_act.fecha_fin +
+                                  " , Resumen:" + new_act.resumen + " , descripcion:" + new_act.descripcion + ";")
+
+                            rep_act = True
+
+                        elif respuesta == 1:
+                            print("La actividad ya existe por favor ingresa otra actividad")
+                elif confirmacion == "n":
+                    print("Acción de crear actividad denegada con exito")
+                    rep_act = True
+                else:
+                    print("Error no seleccionaste nada se volvera al punto anterior")
 
 
 def borrar_actividad():
@@ -234,13 +282,18 @@ def editar_actividad():
 
 
 def listar_actividad():
-    if len(clientes) <= 0:
-        print("No hay clientes, por favor introduzca alguno")
+    if len(actividades) <= 0:
+        print("No hay Actividades, por favor introduzca alguna")
     else:
-        print("Lista de clientes:")
-        for cliente in clientes.values():
+        for a in actividades.values():
             print("-id:" + str(
-                cliente.id_clie) + ", nombre:" + cliente.nombre + ", apellido: " + cliente.apellido + " , email:" + cliente.email + ", telefono:" + cliente.telefono + ";")
+                a.id_actividad) + ", nombre:" + a.nombre + ", fecha inicio: " + a.fecha_inicio + " , fecha fin:" + a.fecha_fin +
+                  " , Resumen:" + a.resumen + " , descripcion:" + a.descripcion + ";")
+            print(" Oportuidad de la actividad:")
+            print("    -id:" + str(
+                a.oportunidad.id_oportunidad) + ", nombre:" + a.oportunidad.nombre + ", etapa: " + a.oportunidad.etapa + ", "
+                                                                                                                         "prioridad:" + a.oportunidad.prioridad + ", riesgo:" + a.oportunidad.riesgo +
+                  ",Correo :" + a.oportunidad.correo + ";")
 
 
 def menu_clientes():
@@ -686,6 +739,13 @@ def borrar_oportunidad():
                         if c.listaOportunidades.keys().__contains__(id_oport_del):
                             print("prueba2")
                             c.listaOportunidades.pop(id_oport_del)
+
+                if len(actividades) > 0:
+                    for a in actividades.values():
+                        if a.oportunidad.id_oportunidad == id_oport_del:
+                            actividades.pop(a.id_actividad)
+                            if len(actividades) <= 0:
+                                break
 
                 oportunidades.pop(id_oport_del)
                 print("cliente eliminado con exito")
