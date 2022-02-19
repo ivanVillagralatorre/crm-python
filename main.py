@@ -1,4 +1,6 @@
 # coding=utf-8
+import numpy as np
+
 from clases.cliente import Cliente
 from clases.etapas import Etapa
 from clases.oportunidad import Oportunidad
@@ -6,6 +8,7 @@ from clases.actividad import Actividad
 from clases.prioridad import Prioridad
 from clases.riesg import Riesgo
 from clases.tipoActividad import TipoActividad
+import matplotlib.pyplot as plt
 
 clientes = {}
 oportunidades = {}
@@ -31,7 +34,114 @@ def submenus(eleccionNumber):
 
 
 def generar_informes():
-    print("informes")
+    # create random data
+    if len(oportunidades) <= 0:
+        print('Error faltan datos para generar informes sobre las oportunidades por favor introduzca mas datos')
+    else:
+        print("Generando informe sobre oportunidades")
+        informe_1_oportunidades()
+        informe_2_oportunidades()
+        informe_3_oportunidades()
+    if len(actividades) <= 0:
+        print('Error faltan datos para generar informes sobre las actividades  por favor introduzca mas datos')
+    else:
+        print("Generando informe sobre actividad")
+        informe_1_actividades()
+
+
+def informe_1_actividades():
+    plt.clf()
+    height = [0, 0]
+
+    for a in actividades.values():
+        if a.tipo == TipoActividad.compra.value:
+            height[0] += 1
+        elif a.tipo == TipoActividad.venta.value:
+            height[1] += 1
+    print(height)
+    bars = ('Compra', 'Venta')
+    y_pos = np.arange(len(bars))
+
+    # Create bars
+    plt.bar(y_pos, height)
+
+    # Create names on the x-axis
+    plt.xticks(y_pos, bars)
+
+    plt.savefig("informes/actividadesPorTipo.pdf")
+
+
+def informe_1_oportunidades():
+    plt.clf()
+    height = [0, 0, 0, 0, 0]
+
+    for oport in oportunidades.values():
+        if oport.etapa == Etapa.nuevo.value:
+            height[0] += 1
+        elif oport.etapa == Etapa.calificado.value:
+            height[1] += 1
+        elif oport.etapa == Etapa.propuesta.value:
+            height[2] += 1
+        elif oport.etapa == Etapa.ganada.value:
+            height[3] += 1
+        elif oport.etapa == Etapa.perdida.value:
+            height[4] += 1
+    bars = ('Nuevo', 'Calificado', 'Propuesta', 'Ganada', 'Perdida')
+    y_pos = np.arange(len(bars))
+
+    # Create bars
+    plt.bar(y_pos, height)
+
+    # Create names on the x-axis
+    plt.xticks(y_pos, bars)
+
+    plt.savefig("informes/oportunidadesPorEtapas.pdf")
+
+
+def informe_2_oportunidades():
+    plt.clf()
+    height = [0, 0, 0]
+
+    for oport in oportunidades.values():
+        if oport.prioridad == Prioridad.alta.value:
+            height[0] += 1
+        elif oport.prioridad == Prioridad.media.value:
+            height[1] += 1
+        elif oport.prioridad == Prioridad.baja.value:
+            height[2] += 1
+    bars = ('Alta', 'Media', 'Baja')
+    y_pos = np.arange(len(bars))
+
+    # Create bars
+    plt.bar(y_pos, height)
+
+    # Create names on the x-axis
+    plt.xticks(y_pos, bars)
+
+    plt.savefig("informes/OportunidadPorPrioridad.pdf")
+
+
+def informe_3_oportunidades():
+    plt.clf()
+    height = [0, 0, 0]
+
+    for oport in oportunidades.values():
+        if oport.riesgo == Riesgo.leve.value:
+            height[0] += 1
+        elif oport.riesgo == Riesgo.moderado.value:
+            height[1] += 1
+        elif oport.riesgo == Riesgo.excesivo.value:
+            height[2] += 1
+    bars = ('Leve', 'Moderado', 'Excesivo')
+    y_pos = np.arange(len(bars))
+
+    # Create bars
+    plt.bar(y_pos, height)
+
+    # Create names on the x-axis
+    plt.xticks(y_pos, bars)
+
+    plt.savefig("informes/OportunidadPorRiesgo.pdf")
 
 
 def menu_actividades():
@@ -1047,7 +1157,8 @@ while not menu_1:
               "0-Menu Clientes\n"
               "1-Menu Oportunidades\n"
               "2-Menu Actividades\n"
-              "3-Salir")
+              "3-Generar Informes\n"
+              "4-Salir")
         eleccion_number = input()
         submenus(eleccion_number)
     except:
