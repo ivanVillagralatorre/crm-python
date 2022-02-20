@@ -58,7 +58,7 @@ def informe_1_actividades():
             height[0] += 1
         elif a.tipo == TipoActividad.venta.value:
             height[1] += 1
-    print(height)
+
     bars = ('Compra', 'Venta')
     y_pos = np.arange(len(bars))
 
@@ -212,7 +212,7 @@ def crear_actividad():
                         tipo_act = TipoActividad.compra.value
                         tipoBoolean = True
                     elif tipoSeleccion == "1":
-                        tipo_act = TipoActividad.venta.value,
+                        tipo_act = TipoActividad.venta.value
                         tipoBoolean = True
 
                     else:
@@ -223,7 +223,7 @@ def crear_actividad():
                 while not validarIdOportunidad:
                     listar_oportunidades()
                     try:
-                        print("Selecciona el id de la oportunidad a la que quieres meter un cliente  : ")
+                        print("Selecciona el id de la oportunidad a la que quieres meter la actividad  : ")
                         id_oport = int(input())
                     except:
                         print("Error porfavor introduzca un número:")
@@ -247,7 +247,7 @@ def crear_actividad():
 
                         print("-id:" + str(
                             new_act.id_actividad) + ", nombre:" + new_act.nombre + ", fecha inicio: " + new_act.fecha_inicio + " , fecha fin:" + new_act.fecha_fin +
-                              " , Resumen:" + new_act.resumen + " , descripcion:" + new_act.descripcion + ";")
+                              " , Resumen:" + new_act.resumen + " , descripcion:" + new_act.descripcion + ",tipo:" + new_act.tipo + ";")
 
                         rep_act = True
 
@@ -382,7 +382,7 @@ def editar_actividad():
                 print("Descripción cambiada de forma satisfactoria")
 
             elif seleccion_de_edicion == '3':
-                print("Salir de la edicion del cliente")
+                print("Salir de la edicion de la actividad")
                 menuEditarActividad = True
             else:
                 print("por favor seleccione una opción correcta ")
@@ -392,10 +392,11 @@ def listar_actividades():
     if len(actividades) <= 0:
         print("No hay Actividades, por favor introduzca alguna")
     else:
+        print("Lista de actividades:")
         for a in actividades.values():
             print("-id:" + str(
                 a.id_actividad) + ", nombre:" + a.nombre + ", fecha inicio: " + a.fecha_inicio + " , fecha fin:" + a.fecha_fin +
-                  " , Resumen:" + a.resumen + " , descripcion:" + a.descripcion + ";")
+                  " , Resumen:" + a.resumen + " , descripcion:" + a.descripcion + " , Tipo:" + a.tipo + ";")
             print(" Oportuidad de la actividad:")
             print("    -id:" + str(
                 a.oportunidad.id_oportunidad) + ", nombre:" + a.oportunidad.nombre + ", etapa: " + a.oportunidad.etapa + ", "
@@ -556,7 +557,7 @@ def editar_cliente():
                 if clientes.keys().__contains__(id_clie_edit):
                     validarId = True
                 else:
-                    print("El cliente no existe por favor seleccione uno que exista para ser eliminado")
+                    print("El cliente no existe por favor seleccione uno que exista para editarlo")
 
             except:
                 print("Error porfavor introduzca un número:")
@@ -855,7 +856,7 @@ def borrar_oportunidad():
                                 break
 
                 oportunidades.pop(id_oport_del)
-                print("cliente eliminado con exito")
+                print("Oportunidad eliminado con exito")
                 listar_oportunidades()
             else:
                 print("Error el id de la oportunidad no se encuentra en registrado, por favor intentelo otra vez")
@@ -882,7 +883,7 @@ def editar_oportunidad():
                 if oportunidades.keys().__contains__(id_oport_edit):
                     validarId = True
                 else:
-                    print("El cliente no existe por favor seleccione uno que exista para ser eliminado")
+                    print("La oportunidad  no existe por favor seleccione una que exista para ser editada")
 
             except:
                 print("Error porfavor introduzca un número:")
@@ -893,7 +894,7 @@ def editar_oportunidad():
                   "0-Editar nombre\n"
                   "1-Editar Etapa\n"
                   "2-Editar Prioridad\n"
-                  "3-4-Salir de la edicion de la etapa\n"
+                  "3-Salir de la edicion de la etapa\n"
                   )
 
             seleccion_de_edicion = input()
@@ -967,7 +968,7 @@ def editar_oportunidad():
 
                 print("Prioridad cambiada de forma satisfactoria")
             elif seleccion_de_edicion == '3':
-                print("Salir de la edicion del cliente")
+                print("Salir de la edicion de la oportunidad")
                 menuEditarCliente = True
             else:
                 print("por favor seleccione una opción correcta ")
@@ -999,9 +1000,9 @@ def listar_oportunidades():
                 print("      No hay Actividades")
             else:
                 for a in o.listaActividades.values():
-                    print("         -id:" + str(
+                    print("-id:" + str(
                         a.id_actividad) + ", nombre:" + a.nombre + ", fecha inicio: " + a.fecha_inicio + " , fecha fin:" + a.fecha_fin +
-                          " , Resumen:" + a.resumen + " , descripcion:" + a.descripcion + ";")
+                          " , Resumen:" + a.resumen + " , descripcion:" + a.descripcion + "Tipo:" + a.tipo + ";")
 
 
 def meter_cliente_en_oportunidad():
